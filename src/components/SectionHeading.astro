@@ -5,8 +5,10 @@ interface Props {
   title: string
   lede?: string
   center?: boolean
+  level?: 'h1' | 'h2'
 }
-const { index, eyebrow, title, lede, center = false } = Astro.props
+const { index, eyebrow, title, lede, center = false, level = 'h2' } = Astro.props
+const Heading = level
 ---
 
 <div class:list={['sh', center && 'is-center']}>
@@ -18,7 +20,7 @@ const { index, eyebrow, title, lede, center = false } = Astro.props
       </div>
     )
   }
-  <h2 class="sh-title">{title}</h2>
+  <Heading class="sh-title">{title}</Heading>
   {lede && <p class="lede">{lede}</p>}
 </div>
 
