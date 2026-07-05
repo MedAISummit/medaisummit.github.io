@@ -1,0 +1,196 @@
+---
+import type { NewsItem } from '../data/news'
+interface Props {
+  item: NewsItem
+  featured?: boolean
+}
+const { item, featured = false } = Astro.props
+const link = item.href ?? (item.body ? `/news/${item.slug}` : undefined)
+const external = Boolean(item.href)
+const Tag = link ? 'a' : 'div'
+const attrs = link ? (external ? { href: link, target: '_blank', rel: 'noopener' } : { href: link }) : {}
+const dateLabel = new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year: 'numeric' }).format(
+  new Date(item.date),
+)
+---
+
+<Tag class:list={['news', featured && 'is-featured', link && 'is-link']} {...attrs}>
+  <div class="news-media">
+    {
+      item.image ? (
+        <img class="news-img" src={item.image} alt={item.title} loading="lazy" decoding="async" />
+      ) : (
+        <div class="news-fallback" aria-hidden="true">
+          <svg viewBox="0 0 240 120" preserveAspectRatio="xMidYMid meet">
+            <polyline
+              points="12,72 92,72 110,44 124,96 142,28 158,92 174,72 228,72"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+      )
+    }
+  </div>
+  <div class="news-body">
+    <div class="news-meta">
+      <span class="news-cat">{item.category}</span>
+      <time datetime={item.date}>{dateLabel}</time>
+      {
+        external && (
+          <svg class="news-ext arrow" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M7 17 17 7M9 7h8v8" />
+          </svg>
+        )
+      }
+    </div>
+    <h3 class="news-title">{item.title}</h3>
+    <p class="news-ex">{item.excerpt}</p>
+    {
+      link && !external && (
+        <span class="news-link">
+          Read the story
+          <svg class="arrow" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </span>
+      )
+    }
+  </div>
+</Tag>
+
+<style>
+  .news {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  .is-link:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--pine) 40%, var(--line));
+    box-shadow: var(--shadow);
+  }
+  .news-media {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--paper-2);
+    border-bottom: 1px solid var(--line);
+  }
+  .news-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .news-fallback {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    color: color-mix(in srgb, var(--pine) 55%, transparent);
+    background: linear-gradient(135deg, var(--pine-soft), var(--amber-soft));
+  }
+  :global([data-theme='dark']) .news-fallback {
+    color: color-mix(in srgb, var(--pine) 78%, transparent);
+    background: linear-gradient(135deg, rgba(59, 183, 163, 0.32), rgba(224, 166, 63, 0.28));
+  }
+  .news-fallback svg {
+    width: 60%;
+    max-width: 220px;
+  }
+  .news-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 1.3rem 1.35rem 1.45rem;
+    flex: 1 1 auto;
+  }
+  .news-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 0.74rem;
+  }
+  .news-cat {
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pine);
+  }
+  .news-meta time {
+    color: var(--ink-faint);
+    font-weight: 600;
+  }
+  .news-ext {
+    margin-inline-start: auto;
+    color: var(--ink-faint);
+    transition: color 0.2s ease;
+  }
+  .is-link:hover .news-ext {
+    color: var(--pine);
+  }
+  .news-title {
+    font-size: 1.15rem;
+    line-height: 1.18;
+  }
+  .news-ex {
+    color: var(--ink-soft);
+    font-size: 0.97rem;
+    line-height: 1.55;
+  }
+  .news-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: auto;
+    padding-top: 0.4rem;
+    font-weight: 650;
+    font-size: 0.9rem;
+    color: var(--pine);
+  }
+  .is-link:hover .news-link .arrow {
+    transform: translateX(3px);
+  }
+
+  /* Lead story: larger, and two columns once there is room. */
+  .is-featured .news-title {
+    font-size: clamp(1.6rem, 3.6vw, 2.5rem);
+    line-height: 1.08;
+  }
+  .is-featured .news-ex {
+    font-size: 1.08rem;
+    max-width: 60ch;
+  }
+  .is-featured .news-body {
+    padding: clamp(1.5rem, 4vw, 2.4rem);
+    gap: 0.85rem;
+    justify-content: center;
+  }
+  .is-featured .news-media {
+    aspect-ratio: 3 / 2;
+  }
+
+  @media (min-width: 760px) {
+    .is-featured {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+    }
+    .is-featured .news-media {
+      aspect-ratio: auto;
+      height: 100%;
+      min-height: 300px;
+      border-bottom: 0;
+      border-inline-end: 1px solid var(--line);
+    }
+  }
+</style>
