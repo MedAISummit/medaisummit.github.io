@@ -1,0 +1,51 @@
+---
+interface Props {
+  index?: string
+  eyebrow?: string
+  title: string
+  lede?: string
+  center?: boolean
+}
+const { index, eyebrow, title, lede, center = false } = Astro.props
+---
+
+<div class:list={['sh', center && 'is-center']}>
+  {
+    (index || eyebrow) && (
+      <div class="sh-top">
+        {index && <span class="index-num">{index}</span>}
+        {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+      </div>
+    )
+  }
+  <h2 class="sh-title">{title}</h2>
+  {lede && <p class="lede">{lede}</p>}
+</div>
+
+<style>
+  .sh {
+    max-width: 62ch;
+  }
+  .is-center {
+    margin-inline: auto;
+    text-align: center;
+  }
+  .is-center .lede {
+    margin-inline: auto;
+  }
+  .sh-top {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 0.9rem;
+  }
+  .is-center .sh-top {
+    justify-content: center;
+  }
+  .sh-title {
+    font-size: clamp(1.75rem, 4.5vw, 2.9rem);
+  }
+  .lede {
+    margin-top: 1rem;
+  }
+</style>

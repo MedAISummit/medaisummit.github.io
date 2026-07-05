@@ -1,0 +1,178 @@
+---
+import type { Edition } from '../data/editions'
+interface Props {
+  editions: Edition[]
+}
+const { editions } = Astro.props
+const pad = (n: number) => String(n).padStart(2, '0')
+---
+
+<ol class="timeline">
+  {
+    editions.map((e) => (
+      <li class="tl-item reveal">
+        <div class="tl-rail" aria-hidden="true">
+          <span class="tl-node" />
+        </div>
+        <div class="tl-marker">
+          <span class="tl-year">{e.year}</span>
+          {e.jalaliYear && <span class="tl-jalali" dir="rtl">{e.jalaliYear}</span>}
+        </div>
+        <a href={`/editions/${e.slug}`} class="tl-card">
+          <div class="tl-top">
+            <span class="index-num">Edition {pad(e.number)}</span>
+            <span class="chip">{e.format}</span>
+          </div>
+          <h3 class="tl-title">{e.title}</h3>
+          <p class="tl-dates">{e.dates}</p>
+          <p class="tl-tag">{e.tagline}</p>
+          <div class="tl-stats">
+            {e.stats.slice(0, 3).map((s) => (
+              <span class="tl-stat">
+                <strong>{s.value}</strong> {s.label}
+              </span>
+            ))}
+          </div>
+          <span class="tl-link">
+            View edition
+            <svg class="arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </span>
+        </a>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .timeline {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+  .tl-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 1.1rem;
+  }
+  .tl-rail {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+  .tl-rail::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    bottom: -1.75rem;
+    width: 2px;
+    background: var(--line);
+  }
+  .tl-item:last-child .tl-rail::before {
+    display: none;
+  }
+  .tl-node {
+    position: relative;
+    z-index: 1;
+    width: 14px;
+    height: 14px;
+    margin-top: 4px;
+    border-radius: 50%;
+    background: var(--pine);
+    box-shadow: 0 0 0 4px var(--paper);
+  }
+  .tl-marker {
+    display: none;
+  }
+  .tl-year {
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    font-weight: 560;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .tl-jalali {
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+  }
+  .tl-card {
+    display: block;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  .tl-card:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--pine) 40%, var(--line));
+    box-shadow: var(--shadow);
+  }
+  .tl-top {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 0.7rem;
+  }
+  .tl-title {
+    font-size: clamp(1.4rem, 3.2vw, 1.85rem);
+  }
+  .tl-dates {
+    margin-top: 0.2rem;
+    color: var(--ink-faint);
+    font-size: 0.92rem;
+  }
+  .tl-tag {
+    margin-top: 0.7rem;
+    color: var(--ink-soft);
+    max-width: 52ch;
+  }
+  .tl-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.6rem;
+    margin-top: 1.2rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--line);
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+  }
+  .tl-stat strong {
+    font-family: var(--font-display);
+    font-weight: 560;
+    color: var(--ink);
+    font-size: 1.05rem;
+  }
+  .tl-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1.2rem;
+    font-weight: 650;
+    font-size: 0.92rem;
+    color: var(--pine);
+  }
+  .tl-card:hover .arrow {
+    transform: translateX(3px);
+  }
+
+  @media (min-width: 760px) {
+    .tl-item {
+      grid-template-columns: 110px 22px 1fr;
+    }
+    .tl-marker {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      padding-top: 1px;
+      text-align: end;
+    }
+  }
+</style>

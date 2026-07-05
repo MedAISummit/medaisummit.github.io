@@ -1,0 +1,89 @@
+---
+import type { Speaker } from '../data/editions'
+interface Props {
+  speaker: Speaker
+}
+const { speaker } = Astro.props
+const Tag = speaker.url ? 'a' : 'div'
+const linkAttrs = speaker.url ? { href: speaker.url, target: '_blank', rel: 'noopener' } : {}
+---
+
+<Tag class:list={['sp', speaker.url && 'is-link']} {...linkAttrs}>
+  <div class="sp-head">
+    <div class="sp-names">
+      <p class="sp-name">{speaker.name}</p>
+      {speaker.nameFa && <p class="sp-name-fa" dir="rtl">{speaker.nameFa}</p>}
+    </div>
+    {
+      speaker.url && (
+        <svg class="ext" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M7 17 17 7M9 7h8v8" />
+        </svg>
+      )
+    }
+  </div>
+  <span class="chip">{speaker.affiliation}</span>
+  <p class="sp-talk">{speaker.talk}</p>
+  {speaker.talkFa && <p class="sp-talk-fa" dir="rtl">{speaker.talkFa}</p>}
+</Tag>
+
+<style>
+  .sp {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    height: 100%;
+    padding: 1.35rem;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  .is-link:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--pine) 45%, var(--line));
+    box-shadow: var(--shadow);
+  }
+  .sp-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  .sp-name {
+    font-family: var(--font-display);
+    font-size: 1.12rem;
+    font-weight: 560;
+    line-height: 1.2;
+  }
+  .sp-name-fa {
+    margin-top: 0.15rem;
+    font-size: 0.9rem;
+    color: var(--ink-faint);
+  }
+  .ext {
+    color: var(--ink-faint);
+    flex-shrink: 0;
+    transition: color 0.2s ease;
+  }
+  .is-link:hover .ext {
+    color: var(--pine);
+  }
+  .chip {
+    align-self: flex-start;
+  }
+  .sp-talk {
+    margin-top: auto;
+    font-size: 0.98rem;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .sp-talk-fa {
+    font-size: 0.92rem;
+    color: var(--ink-faint);
+    line-height: 1.7;
+  }
+</style>

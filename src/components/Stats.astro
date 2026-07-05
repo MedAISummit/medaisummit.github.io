@@ -1,0 +1,55 @@
+---
+import type { Stat } from '../data/editions'
+interface Props {
+  stats: Stat[]
+}
+const { stats } = Astro.props
+---
+
+<dl class="stats">
+  {
+    stats.map((s) => (
+      <div class="stat">
+        <dd class="value">{s.value}</dd>
+        <dt class="label">{s.label}</dt>
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .stat {
+    background: var(--card);
+    padding: 1.5rem 1.25rem;
+    text-align: center;
+  }
+  .value {
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 5vw, 2.7rem);
+    font-weight: 580;
+    line-height: 1;
+    color: var(--pine);
+    letter-spacing: -0.02em;
+  }
+  .label {
+    margin-top: 0.5rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+  }
+  @media (min-width: 720px) {
+    .stats {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>
