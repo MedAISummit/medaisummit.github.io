@@ -55,6 +55,18 @@ const institutions = [
     </div>
     <div class="hero-glow" aria-hidden="true"></div>
     <div class="hero-glow-2" aria-hidden="true"></div>
+    <svg class="hero-line" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
+      {
+        Array.from({ length: 13 }).map((_, i) => (
+          <line class="hl-tick" x1={i * 100} y1="58" x2={i * 100} y2="80" vector-effect="non-scaling-stroke" />
+        ))
+      }
+      <polyline
+        class="hl-wave"
+        vector-effect="non-scaling-stroke"
+        points="0,70 300,70 360,63 405,70 470,70 500,44 516,92 536,26 556,88 576,70 700,70 770,58 835,70 980,70 1030,64 1075,70 1200,70"
+      />
+    </svg>
   </section>
 
   {
@@ -186,6 +198,31 @@ const institutions = [
     filter: blur(26px);
     pointer-events: none;
     z-index: -1;
+  }
+  .hero-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 3%;
+    width: 100%;
+    height: 108px;
+    opacity: 0.5;
+    z-index: -1;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+  }
+  .hl-wave {
+    fill: none;
+    stroke: var(--pine);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .hl-tick {
+    stroke: var(--amber);
+    stroke-width: 1;
+    opacity: 0.38;
   }
   .hero-title {
     margin-top: 1.3rem;
