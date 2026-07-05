@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="MedAI Summit">
+  <rect width="1200" height="630" fill="#f6f3ec" />
+  <rect x="0" y="0" width="1200" height="10" fill="#0f6b5e" />
+  <g font-family="Georgia, 'Times New Roman', serif" fill="#16211d">
+    <rect x="80" y="90" width="70" height="70" rx="18" fill="#0f6b5e" />
+    <text x="115" y="142" font-size="46" font-weight="600" fill="#f6f3ec" text-anchor="middle">M</text>
+    <text x="170" y="140" font-size="40" font-weight="600" fill="#16211d">MedAI Summit</text>
+    <text x="80" y="330" font-size="86" font-weight="600" letter-spacing="-2">The annual summit on</text>
+    <text x="80" y="430" font-size="86" font-weight="600" letter-spacing="-2">AI in <tspan fill="#0f6b5e" font-style="italic">medicine</tspan>.</text>
+  </g>
+  <g font-family="'Segoe UI', system-ui, sans-serif" fill="#4c5a53">
+    <text x="80" y="540" font-size="30" font-weight="600">An open archive of every edition, its speakers and its talks.</text>
+  </g>
+  <text x="1120" y="565" font-family="'Segoe UI', system-ui, sans-serif" font-size="26" font-weight="700" fill="#b4741a" text-anchor="end">medaisummit.github.io</text>
+</svg>
