@@ -1,0 +1,209 @@
+---
+import { site } from '../data/site'
+
+const links = [
+  { label: 'Home', href: '/' },
+  { label: 'Editions', href: '/editions' },
+  { label: 'About', href: '/about' },
+]
+const path = Astro.url.pathname.replace(/\/$/, '') || '/'
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href))
+---
+
+<header class="site-header">
+  <div class="container bar">
+    <a href="/" class="brand" aria-label={site.name}>
+      <span class="brand-mark" aria-hidden="true">M</span>
+      <span class="brand-name">MedAI <em>Summit</em></span>
+    </a>
+
+    <nav class="links" aria-label="Primary">
+      {links.map((l) => <a href={l.href} class:list={['nav-link', isActive(l.href) && 'active']}>{l.label}</a>)}
+    </nav>
+
+    <div class="actions">
+      <button class="icon-btn theme-toggle" type="button" aria-label="Switch colour theme">
+        <svg class="i moon" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg>
+        <svg class="i sun" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+      </button>
+      <a href={site.channel} class="btn btn-primary follow" target="_blank" rel="noopener">Follow</a>
+      <button class="icon-btn menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-menu" id="mobile-menu" hidden>
+    <nav class="container" aria-label="Mobile">
+      {links.map((l) => <a href={l.href} class:list={['m-link', isActive(l.href) && 'active']}>{l.label}</a>)}
+      <a href={site.channel} class="btn btn-primary m-follow" target="_blank" rel="noopener">Follow on Telegram</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const html = document.documentElement
+  const toggle = document.querySelector('.theme-toggle')
+  toggle?.addEventListener('click', () => {
+    const dark = html.getAttribute('data-theme') === 'dark'
+    if (dark) {
+      html.removeAttribute('data-theme')
+      localStorage.setItem('theme', 'light')
+    } else {
+      html.setAttribute('data-theme', 'dark')
+      localStorage.setItem('theme', 'dark')
+    }
+  })
+
+  const menuBtn = document.querySelector('.menu-btn')
+  const menu = document.getElementById('mobile-menu')
+  const setMenu = (open: boolean) => {
+    if (!menu || !menuBtn) return
+    if (open) menu.removeAttribute('hidden')
+    else menu.setAttribute('hidden', '')
+    menuBtn.setAttribute('aria-expanded', String(open))
+  }
+  menuBtn?.addEventListener('click', () => setMenu(menu?.hasAttribute('hidden') ?? false))
+  menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)))
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--paper) 86%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    height: 68px;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-display);
+  }
+  .brand-mark {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: var(--pine);
+    color: #fbfcf9;
+    font-weight: 600;
+    font-size: 1.15rem;
+  }
+  .brand-name {
+    font-size: 1.16rem;
+    font-weight: 560;
+    letter-spacing: -0.01em;
+  }
+  .brand-name em {
+    font-style: italic;
+    color: var(--pine);
+  }
+  .links {
+    display: none;
+    gap: 0.35rem;
+    margin-inline-start: auto;
+  }
+  .nav-link {
+    padding: 0.45rem 0.85rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+  .nav-link:hover {
+    color: var(--ink);
+    background: var(--paper-2);
+  }
+  .nav-link.active {
+    color: var(--pine);
+  }
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .icon-btn {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+  .icon-btn:hover {
+    color: var(--ink);
+    background: var(--paper-2);
+  }
+  .theme-toggle .sun {
+    display: none;
+  }
+  :global([data-theme='dark']) .theme-toggle .sun {
+    display: block;
+  }
+  :global([data-theme='dark']) .theme-toggle .moon {
+    display: none;
+  }
+  .follow {
+    display: none;
+    padding: 0.5rem 1.1rem;
+    font-size: 0.9rem;
+  }
+  .menu-btn {
+    display: grid;
+  }
+  .mobile-menu {
+    border-top: 1px solid var(--line);
+    background: var(--paper);
+    padding-block: 0.8rem 1.2rem;
+  }
+  .mobile-menu nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .m-link {
+    padding: 0.75rem 0.4rem;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--line);
+  }
+  .m-link.active {
+    color: var(--pine);
+  }
+  .m-follow {
+    margin-top: 1rem;
+    justify-content: center;
+  }
+
+  @media (min-width: 800px) {
+    .links {
+      display: flex;
+    }
+    .follow {
+      display: inline-flex;
+    }
+    .menu-btn {
+      display: none;
+    }
+    .mobile-menu {
+      display: none;
+    }
+  }
+</style>
