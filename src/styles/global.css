@@ -231,6 +231,7 @@ h3,
 .btn-ghost:hover {
   border-color: var(--pine);
   color: var(--pine);
+  background: color-mix(in srgb, var(--pine) 7%, transparent);
 }
 
 .arrow {
