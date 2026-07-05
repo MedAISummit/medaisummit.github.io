@@ -26,7 +26,7 @@ const pad = (n: number) => String(n).padStart(2, '0')
       <div class="ed-meta">
         <span class="ed-year">{edition.year}</span>
         {edition.jalaliYear && <span class="ed-jalali" dir="rtl">{edition.jalaliYear}</span>}
-        <span class="dot" aria-hidden="true">·</span>
+        <span class="dot" aria-hidden="true"></span>
         <span>{edition.dates}</span>
         <span class="chip">{edition.format}</span>
       </div>
@@ -122,7 +122,10 @@ const pad = (n: number) => String(n).padStart(2, '0')
     color: var(--ink-faint);
   }
   .dot {
-    color: var(--ink-faint);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--ink-faint);
   }
   .ed-tag {
     margin-top: 1.4rem;
