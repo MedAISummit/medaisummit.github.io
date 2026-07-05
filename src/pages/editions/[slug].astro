@@ -31,6 +31,11 @@ const pad = (n: number) => String(n).padStart(2, '0')
         <span class="chip">{edition.format}</span>
       </div>
       <p class="lede ed-tag">{edition.tagline}</p>
+      {
+        edition.poster && (
+          <img class="ed-poster" src={edition.poster} alt={`${edition.title} key visual`} width="1200" height="480" loading="eager" decoding="async" />
+        )
+      }
     </div>
   </section>
 
@@ -130,6 +135,14 @@ const pad = (n: number) => String(n).padStart(2, '0')
   .ed-tag {
     margin-top: 1.4rem;
     max-width: 56ch;
+  }
+  .ed-poster {
+    width: 100%;
+    aspect-ratio: 5 / 2;
+    object-fit: cover;
+    margin-top: 2rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
   }
   .pt-0 {
     padding-top: 0;

@@ -10,6 +10,8 @@ export interface Speaker {
   talk: string
   talkFa?: string
   url?: string
+  // Optional square headshot dropped into public/, e.g. '/speakers/faghani.jpg'.
+  image?: string
 }
 
 export interface Stat {
@@ -38,6 +40,8 @@ export interface Edition {
   countries: string[]
   speakers: Speaker[]
   contentUrl?: string
+  // Optional wide key visual dropped into public/, e.g. '/editions/2025.jpg'.
+  poster?: string
 }
 
 const tg = (n: number) => `https://t.me/MedAISummit/${n}`
