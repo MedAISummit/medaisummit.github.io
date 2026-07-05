@@ -21,10 +21,29 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Build with Astro
-        uses: withastro/action@v3
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
+      # Enables Pages and sets its source to GitHub Actions, so no repository
+      # setting has to be changed by hand and the built-in Jekyll build stops.
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Install dependencies
+        run: npm ci
+      - name: Run checks and tests
+        run: |
+          npm run check
+          npm test
+      - name: Build
+        run: npm run build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
 
   deploy:
     needs: build
