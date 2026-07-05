@@ -1,0 +1,18 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# logs and local env
+*.log
+.env
+.env.*
+!.env.example
+
+# os and editor cruft
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
