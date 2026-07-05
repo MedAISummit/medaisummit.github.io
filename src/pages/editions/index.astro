@@ -1,0 +1,38 @@
+---
+import Base from '../../layouts/Base.astro'
+import SectionHeading from '../../components/SectionHeading.astro'
+import EditionTimeline from '../../components/EditionTimeline.astro'
+import { pastEditions } from '../../data/editions'
+---
+
+<Base
+  title="Editions"
+  description="Every edition of the MedAI Summit, year by year, with its speakers, talks and highlights."
+>
+  <section class="head">
+    <div class="container">
+      <div class="reveal">
+        <SectionHeading
+          eyebrow="The archive"
+          title="Editions"
+          lede="A record of each MedAI Summit. Newest first. The list grows a little every year."
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section pt-0">
+    <div class="container">
+      <EditionTimeline editions={pastEditions} />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .head {
+    padding-block: clamp(3rem, 7vw, 5rem) 1rem;
+  }
+  .pt-0 {
+    padding-top: clamp(1.5rem, 4vw, 2.5rem);
+  }
+</style>

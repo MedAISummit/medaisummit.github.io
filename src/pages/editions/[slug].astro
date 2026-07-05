@@ -1,0 +1,202 @@
+---
+import Base from '../../layouts/Base.astro'
+import Stats from '../../components/Stats.astro'
+import SpeakerCard from '../../components/SpeakerCard.astro'
+import DisciplineBars from '../../components/DisciplineBars.astro'
+import SectionHeading from '../../components/SectionHeading.astro'
+import { editions } from '../../data/editions'
+
+export function getStaticPaths() {
+  return editions.map((e) => ({ params: { slug: e.slug }, props: { edition: e } }))
+}
+
+const { edition } = Astro.props
+const pad = (n: number) => String(n).padStart(2, '0')
+---
+
+<Base title={`${edition.title}, ${edition.year}`} description={edition.tagline}>
+  <section class="ed-hero">
+    <div class="container">
+      <a href="/editions" class="back">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg>
+        All editions
+      </a>
+      <p class="eyebrow">Edition {pad(edition.number)}</p>
+      <h1 class="ed-title">{edition.title}</h1>
+      <div class="ed-meta">
+        <span class="ed-year">{edition.year}</span>
+        {edition.jalaliYear && <span class="ed-jalali" dir="rtl">{edition.jalaliYear}</span>}
+        <span class="dot" aria-hidden="true">·</span>
+        <span>{edition.dates}</span>
+        <span class="chip">{edition.format}</span>
+      </div>
+      <p class="lede ed-tag">{edition.tagline}</p>
+    </div>
+  </section>
+
+  <section class="section pt-0">
+    <div class="container">
+      <div class="reveal">
+        <Stats stats={edition.stats} />
+      </div>
+      <p class="summary reveal">{edition.summary}</p>
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="container">
+      <div class="reveal">
+        <SectionHeading index="01" eyebrow="Programme" title="Speakers and talks" lede="Each talk links to its recording. Names appear in English and Persian." />
+      </div>
+      <div class="sp-grid reveal">
+        {edition.speakers.map((s) => <SpeakerCard speaker={s} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container who">
+      <div class="who-col reveal">
+        <SectionHeading index="02" eyebrow="Who came" title="Participants by field" />
+        <div class="who-body">
+          <DisciplineBars disciplines={edition.disciplines} />
+        </div>
+      </div>
+      <div class="who-col reveal">
+        <SectionHeading index="03" eyebrow="Reach" title="Countries" />
+        <ul class="countries who-body">
+          {edition.countries.map((c) => <li class="chip country">{c}</li>)}
+        </ul>
+        {
+          edition.contentUrl && (
+            <div class="rec">
+              <h3>Recordings and materials</h3>
+              <p>Session videos, slides and handouts are kept for anyone who joins later.</p>
+              <a href={edition.contentUrl} class="btn btn-primary" target="_blank" rel="noopener">
+                Get access
+                <svg class="arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+              </a>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ed-hero {
+    padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(1.5rem, 4vw, 2.5rem);
+  }
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    margin-bottom: 1.6rem;
+  }
+  .back:hover {
+    color: var(--pine);
+  }
+  .ed-title {
+    margin-top: 1rem;
+    font-size: clamp(2.4rem, 7vw, 4.2rem);
+  }
+  .ed-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.7rem;
+    margin-top: 1.2rem;
+    color: var(--ink-soft);
+    font-weight: 550;
+  }
+  .ed-year {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    color: var(--ink);
+  }
+  .ed-jalali {
+    color: var(--ink-faint);
+  }
+  .dot {
+    color: var(--ink-faint);
+  }
+  .ed-tag {
+    margin-top: 1.4rem;
+    max-width: 56ch;
+  }
+  .pt-0 {
+    padding-top: 0;
+  }
+  .summary {
+    margin-top: 2rem;
+    max-width: 68ch;
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .band {
+    background: var(--paper-2);
+    border-block: 1px solid var(--line);
+  }
+  .sp-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.1rem;
+    margin-top: 2.5rem;
+  }
+  .who {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .who-body {
+    margin-top: 1.8rem;
+  }
+  .countries {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .country {
+    font-size: 0.92rem;
+    padding: 0.4rem 0.9rem;
+  }
+  .rec {
+    margin-top: 2.5rem;
+    padding: 1.6rem;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+  .rec h3 {
+    font-size: 1.25rem;
+  }
+  .rec p {
+    margin-top: 0.5rem;
+    color: var(--ink-soft);
+  }
+  .rec .btn {
+    margin-top: 1.2rem;
+  }
+
+  @media (min-width: 640px) {
+    .sp-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 980px) {
+    .sp-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .who {
+      grid-template-columns: 1.3fr 1fr;
+      gap: 4rem;
+    }
+  }
+</style>

@@ -1,0 +1,136 @@
+---
+import Base from '../layouts/Base.astro'
+import SectionHeading from '../components/SectionHeading.astro'
+import { site } from '../data/site'
+import { editions } from '../data/editions'
+
+const firstYear = editions[editions.length - 1]?.year
+---
+
+<Base title="About" description={site.description}>
+  <section class="head">
+    <div class="container">
+      <div class="reveal">
+        <SectionHeading
+          eyebrow="About"
+          title="A summit, and its open archive"
+          lede="MedAI Summit is an annual event on artificial intelligence in medicine. This site keeps its record."
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section pt-0">
+    <div class="container layout">
+      <div class="prose reveal">
+        <p>
+          MedAI Summit is a yearly summit on artificial intelligence in medicine. It began in {firstYear}
+          as an online event and brings together researchers, clinicians and engineers from Iran and
+          beyond.
+        </p>
+        <p>
+          Each year the summit runs a program of talks and workshops. Speakers share work across
+          radiology, cardiology, dentistry, oncology and more. Every session is recorded, subtitled in
+          English, and kept for people who join later.
+        </p>
+        <p>
+          This website is the open archive. It collects every edition in one place so the talks stay
+          easy to find. It is a plain static site, which keeps it fast, free to host, and simple to
+          maintain. New editions are added as they happen.
+        </p>
+        <p>
+          Want the recordings, or want to take part in the next edition? The community channel is the
+          best place to reach the team.
+        </p>
+      </div>
+
+      <aside class="panel reveal">
+        <h2>Reach the summit</h2>
+        <ul class="links">
+          {
+            site.socials.map((s) => (
+              <li>
+                <a href={s.url} target="_blank" rel="noopener">
+                  <span>{s.label}</span>
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <a href={site.contact} class="btn btn-primary panel-cta" target="_blank" rel="noopener">Message the team</a>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .head {
+    padding-block: clamp(3rem, 7vw, 5rem) 1rem;
+  }
+  .pt-0 {
+    padding-top: clamp(1.5rem, 4vw, 2.5rem);
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .prose p {
+    font-size: 1.12rem;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    max-width: 62ch;
+  }
+  .prose p + p {
+    margin-top: 1.4rem;
+  }
+  .prose p :global(strong) {
+    color: var(--ink);
+  }
+  .panel {
+    align-self: start;
+    padding: 1.6rem;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+  .panel h2 {
+    font-family: var(--font-sans);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .links {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+  }
+  .links a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--line);
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .links a:hover {
+    color: var(--pine);
+  }
+  .panel-cta {
+    width: 100%;
+    justify-content: center;
+    margin-top: 1.4rem;
+  }
+
+  @media (min-width: 900px) {
+    .layout {
+      grid-template-columns: 1.7fr 1fr;
+      gap: 4rem;
+    }
+  }
+</style>
