@@ -1,5 +1,6 @@
 ---
 import { site } from '../data/site'
+import BrandMark from './BrandMark.astro'
 const year = new Date().getFullYear()
 ---
 
@@ -8,7 +9,7 @@ const year = new Date().getFullYear()
     <div class="top">
       <div class="brand-col">
         <a href="/" class="brand" aria-label={site.name}>
-          <span class="brand-mark" aria-hidden="true">M</span>
+          <BrandMark size={32} />
           <span>MedAI <em>Summit</em></span>
         </a>
         <p class="blurb">{site.tagline} An open archive of every edition, its speakers and its talks.</p>
@@ -59,16 +60,6 @@ const year = new Date().getFullYear()
   .brand em {
     font-style: italic;
     color: var(--pine);
-  }
-  .brand-mark {
-    display: grid;
-    place-items: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 9px;
-    background: var(--pine);
-    color: #fbfcf9;
-    font-weight: 600;
   }
   .blurb {
     margin-top: 1rem;

@@ -1,0 +1,37 @@
+---
+// The MedAI Summit monogram: one continuous stroke that reads as an "M" and as a
+// heartbeat trace, on the pine chip. Pure inline SVG, theme-agnostic on the chip.
+interface Props {
+  size?: number
+}
+const { size = 34 } = Astro.props
+---
+
+<span class="brand-mark" aria-hidden="true" style={`--bm:${size}px`}>
+  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path
+      d="M3 17h2l3-10 4 7 4-7 3 10h2"
+      stroke="#fbfcf9"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"></path>
+    <circle cx="3" cy="17" r="1.15" fill="#fbfcf9"></circle>
+    <circle cx="21" cy="17" r="1.15" fill="#fbfcf9"></circle>
+  </svg>
+</span>
+
+<style>
+  .brand-mark {
+    display: grid;
+    place-items: center;
+    width: var(--bm);
+    height: var(--bm);
+    border-radius: calc(var(--bm) * 0.29);
+    background: var(--pine);
+    box-shadow: 0 1px 2px rgba(22, 33, 29, 0.18);
+  }
+  .brand-mark svg {
+    width: calc(var(--bm) * 0.66);
+    height: calc(var(--bm) * 0.66);
+  }
+</style>

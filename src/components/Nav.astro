@@ -1,5 +1,6 @@
 ---
 import { site } from '../data/site'
+import BrandMark from './BrandMark.astro'
 
 const links = [
   { label: 'Home', href: '/' },
@@ -13,7 +14,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
 <header class="site-header">
   <div class="container bar">
     <a href="/" class="brand" aria-label={site.name}>
-      <span class="brand-mark" aria-hidden="true">M</span>
+      <BrandMark />
       <span class="brand-name">MedAI <em>Summit</em></span>
     </a>
 
@@ -88,17 +89,6 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     align-items: center;
     gap: 0.6rem;
     font-family: var(--font-display);
-  }
-  .brand-mark {
-    display: grid;
-    place-items: center;
-    width: 34px;
-    height: 34px;
-    border-radius: 10px;
-    background: var(--pine);
-    color: #fbfcf9;
-    font-weight: 600;
-    font-size: 1.15rem;
   }
   .brand-name {
     font-size: 1.16rem;
