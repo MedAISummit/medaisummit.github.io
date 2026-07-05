@@ -35,13 +35,14 @@ npm run check    # type and template checks
 ## How it deploys
 
 The workflow in `.github/workflows/deploy.yml` checks, tests and builds the site
-with Astro, then publishes it to GitHub Pages on every push to `main`. It also runs
-`configure-pages`, which points Pages at GitHub Actions on its own, so there is
-usually nothing to set by hand.
+with Astro on every push to `main`, then publishes the result to GitHub Pages.
 
-If the very first run fails because Pages was already set to deploy from a branch,
-open Settings, then Pages, set the source to GitHub Actions, and re-run the
-workflow once. After that every push deploys on its own.
+One repository setting is required once, because only a repo admin can set it: open
+Settings, then Pages, and under "Build and deployment" set the source to GitHub
+Actions. The workflow also asks for this through `configure-pages`, but an existing
+branch source has to be switched by hand. After it is set, every push deploys on its
+own, and the built-in Jekyll build stops running. To publish without a new push, open
+the Actions tab and run "Deploy to GitHub Pages" from there.
 
 ## Layout
 
