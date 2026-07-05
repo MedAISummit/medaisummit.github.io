@@ -1,19 +1,42 @@
+import { readFileSync, readdirSync } from 'node:fs'
+import { join } from 'node:path'
 import { describe, it, expect } from 'vitest'
 import { editions } from './editions'
 import { site } from './site'
 
-// Collect the English-authored strings only. Persian fields (nameFa, talkFa) are
-// user content and are left alone.
-const strings: string[] = []
-for (const e of editions) {
-  strings.push(e.title, e.dates, e.tagline, e.summary)
-  e.stats.forEach((s) => strings.push(s.label))
-  e.disciplines.forEach((d) => strings.push(d.name))
-  e.countries.forEach((c) => strings.push(c))
-  e.speakers.forEach((s) => strings.push(s.name, s.affiliation, s.talk))
+// Typographic marks that should never appear in the source. Built from code points
+// so this file holds none of them itself.
+const FORBIDDEN_CHARS: Record<string, string> = {
+  [String.fromCharCode(0x2014)]: 'em dash',
+  [String.fromCharCode(0x2013)]: 'en dash',
+  [String.fromCharCode(0x00b7)]: 'middot',
+  [String.fromCharCode(0x2026)]: 'ellipsis',
 }
-strings.push(site.name, site.tagline, site.description)
-site.socials.forEach((s) => strings.push(s.label))
+
+function sourceFiles(): string[] {
+  const out: string[] = ['README.md']
+  const walk = (dir: string) => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const p = join(dir, entry.name)
+      if (entry.isDirectory()) walk(p)
+      else if (/\.(astro|ts|css|md)$/.test(entry.name) && !/\.test\.tsx?$/.test(entry.name)) out.push(p)
+    }
+  }
+  walk('src')
+  return out
+}
+
+// English-authored data strings (Persian fields are left alone).
+const dataStrings: string[] = []
+for (const e of editions) {
+  dataStrings.push(e.title, e.dates, e.tagline, e.summary)
+  e.stats.forEach((s) => dataStrings.push(s.label))
+  e.disciplines.forEach((d) => dataStrings.push(d.name))
+  e.countries.forEach((c) => dataStrings.push(c))
+  e.speakers.forEach((s) => dataStrings.push(s.name, s.affiliation, s.talk))
+}
+dataStrings.push(site.name, site.tagline, site.description)
+site.socials.forEach((s) => dataStrings.push(s.label))
 
 const BANNED = [
   /\bcomprehensive\b/i,
@@ -27,16 +50,24 @@ const BANNED = [
   /\bempowering\b/i,
   /\bintricate\b/i,
   /\bnuanced\b/i,
+  /\bcutting-edge\b/i,
+  /\bworld-class\b/i,
 ]
 
-describe('authored English content', () => {
-  it('contains no em or en dashes', () => {
-    const bad = strings.filter((s) => s.includes('—') || s.includes('–'))
-    expect(bad, bad.join(' | ')).toEqual([])
+describe('site copy stays clean', () => {
+  it('has no em dash, en dash, middot or ellipsis in any source file', () => {
+    const hits: string[] = []
+    for (const file of sourceFiles()) {
+      const text = readFileSync(file, 'utf8')
+      for (const [ch, name] of Object.entries(FORBIDDEN_CHARS)) {
+        if (text.includes(ch)) hits.push(`${name} in ${file}`)
+      }
+    }
+    expect(hits, hits.join(' | ')).toEqual([])
   })
 
-  it('uses none of the banned AI tell-words', () => {
-    const hits = strings.filter((s) => BANNED.some((re) => re.test(s)))
+  it('uses none of the banned words in the data copy', () => {
+    const hits = dataStrings.filter((s) => BANNED.some((re) => re.test(s)))
     expect(hits, hits.join(' | ')).toEqual([])
   })
 })
