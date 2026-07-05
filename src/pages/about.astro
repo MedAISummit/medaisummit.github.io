@@ -2,9 +2,6 @@
 import Base from '../layouts/Base.astro'
 import SectionHeading from '../components/SectionHeading.astro'
 import { site } from '../data/site'
-import { editions } from '../data/editions'
-
-const firstYear = editions[editions.length - 1]?.year
 ---
 
 <Base title="About" description={site.description}>
@@ -14,7 +11,7 @@ const firstYear = editions[editions.length - 1]?.year
         <SectionHeading
           eyebrow="About"
           title="A summit, and its open archive"
-          lede="MedAI Summit is an annual event on artificial intelligence in medicine. This site keeps its record."
+          lede="MedAI Summit is a yearly event on artificial intelligence in medicine. This site keeps its record, open to anyone."
         />
       </div>
     </div>
@@ -24,23 +21,30 @@ const firstYear = editions[editions.length - 1]?.year
     <div class="container layout">
       <div class="prose reveal">
         <p>
-          MedAI Summit is a yearly summit on artificial intelligence in medicine. It began in {firstYear}
-          as an online event and brings together researchers, clinicians and engineers from Iran and
-          beyond.
+          MedAI Summit is an annual summit on artificial intelligence in medicine. Each year we bring
+          clinicians, researchers and engineers together to look at what AI can and cannot do in real
+          clinical work, from radiology and cardiology to dentistry, oncology and the ethics of
+          medical data. The people in the room are the people doing the work: radiologists reading
+          real scans, cardiologists building early-detection tools, and engineers shipping products
+          used by patients.
         </p>
         <p>
-          Each year the summit runs a program of talks and workshops. Speakers share work across
-          radiology, cardiology, dentistry, oncology and more. Every session is recorded, subtitled in
-          English, and kept for people who join later.
+          The first edition ran online on 30 and 31 October 2025. More than 500 people from Iran,
+          Colombia, India and Tajikistan joined 16 talks and workshops across the two days, close to
+          9,000 person-hours of attention. Speakers came from Mayo Clinic, the World Health
+          Organization, the Icahn School of Medicine at Mount Sinai, Tehran University of Medical
+          Sciences and other institutions across Iran.
         </p>
         <p>
-          This website is the open archive. It collects every edition in one place so the talks stay
-          easy to find. It is a plain static site, which keeps it fast, free to host, and simple to
-          maintain. New editions are added as they happen.
+          This website is the archive, and only the archive. It holds past editions and grows by one
+          entry a year. Every session from every edition was recorded, subtitled in English and
+          shared with handouts, and it all stays available. If you missed a year, or want to send a
+          colleague a specific talk, it is here.
         </p>
         <p>
-          Want the recordings, or want to take part in the next edition? The community channel is the
-          best place to reach the team.
+          Registration, accounts and anything to do with the live event live on the main summit site,
+          which is separate. There is no backend here and nothing to sign up for. The community
+          carries on between editions on Telegram, and recordings are shared through the admin.
         </p>
       </div>
 
@@ -62,6 +66,26 @@ const firstYear = editions[editions.length - 1]?.year
       </aside>
     </div>
   </section>
+
+  <section class="section pt-0">
+    <div class="container">
+      <div class="invite-note reveal">
+        <div class="invite-note-copy">
+          <p class="eyebrow">Invited to speak?</p>
+          <h2 class="invite-note-title">Present once, and it keeps reaching clinicians.</h2>
+          <p class="invite-note-text">
+            Every talk is recorded, subtitled in English and kept on this archive, in front of an
+            audience that is mostly clinicians. If you have been invited, or want to be, the team is
+            one message away.
+          </p>
+        </div>
+        <a href={site.contact} class="btn btn-primary" target="_blank" rel="noopener">
+          Message the team
+          <svg class="arrow" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </a>
+      </div>
+    </div>
+  </section>
 </Base>
 
 <style>
@@ -80,7 +104,7 @@ const firstYear = editions[editions.length - 1]?.year
     font-size: 1.12rem;
     line-height: 1.75;
     color: var(--ink-soft);
-    max-width: 62ch;
+    max-width: 64ch;
   }
   .prose p + p {
     margin-top: 1.4rem;
@@ -126,11 +150,45 @@ const firstYear = editions[editions.length - 1]?.year
     justify-content: center;
     margin-top: 1.4rem;
   }
+  .invite-note {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    padding: clamp(1.7rem, 4vw, 2.6rem);
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+  .invite-note-title {
+    margin-top: 1rem;
+    font-size: clamp(1.5rem, 3.5vw, 2.1rem);
+    max-width: 22ch;
+  }
+  .invite-note-text {
+    margin-top: 0.9rem;
+    max-width: 60ch;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .invite-note .btn {
+    align-self: start;
+    flex-shrink: 0;
+  }
 
   @media (min-width: 900px) {
     .layout {
       grid-template-columns: 1.7fr 1fr;
       gap: 4rem;
+    }
+    .invite-note {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
+    }
+    .invite-note .btn {
+      align-self: center;
     }
   }
 </style>
