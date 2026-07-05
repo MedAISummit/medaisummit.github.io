@@ -54,7 +54,7 @@ export const editions: Edition[] = [
     status: 'past',
     tagline: 'The first international online summit on artificial intelligence in medicine.',
     summary:
-      'Held online on 30 and 31 October 2025, the first MedAI Summit brought together more than 500 participants from Iran and abroad for 16 talks and workshops, all with English subtitles and handouts. Every session was recorded and stays available for anyone who joins later.',
+      'The first MedAI Summit ran online on 30 and 31 October 2025. More than 500 participants from Iran, Colombia, India and Tajikistan joined 16 talks and workshops over two days, with speakers from Mayo Clinic, the World Health Organization, the Icahn School of Medicine at Mount Sinai and four Iranian medical universities. Every session was recorded, subtitled in English and shared with handouts, and it all stays available for anyone who joins later.',
     contentUrl: 'https://t.me/medaisummit_admin',
     stats: [
       { value: '500+', label: 'Participants' },
