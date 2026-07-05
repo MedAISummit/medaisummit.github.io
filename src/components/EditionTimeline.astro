@@ -1,13 +1,41 @@
 ---
 import type { Edition } from '../data/editions'
+import { site } from '../data/site'
 interface Props {
   editions: Edition[]
+  showUpcoming?: boolean
 }
-const { editions } = Astro.props
+const { editions, showUpcoming = false } = Astro.props
 const pad = (n: number) => String(n).padStart(2, '0')
 ---
 
 <ol class="timeline">
+  {
+    showUpcoming && (
+      <li class="tl-item tl-next reveal">
+        <div class="tl-rail" aria-hidden="true">
+          <span class="tl-node is-next" />
+        </div>
+        <div class="tl-marker">
+          <span class="tl-year next-label">Next</span>
+        </div>
+        <a href={site.channel} class="tl-card is-next" target="_blank" rel="noopener">
+          <div class="tl-top">
+            <span class="index-num">Upcoming</span>
+            <span class="chip chip-quiet">To be announced</span>
+          </div>
+          <h3 class="tl-title">The next edition</h3>
+          <p class="tl-tag">Dates for the next summit are shared on the channel first. Follow to hear when the call for talks opens.</p>
+          <span class="tl-link">
+            Follow for updates
+            <svg class="arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </span>
+        </a>
+      </li>
+    )
+  }
   {
     editions.map((e) => (
       <li class="tl-item reveal">
@@ -161,6 +189,29 @@ const pad = (n: number) => String(n).padStart(2, '0')
   }
   .tl-card:hover .arrow {
     transform: translateX(3px);
+  }
+
+  /* Upcoming teaser: outlined and muted so it reads as a placeholder, not a record. */
+  .tl-node.is-next {
+    background: var(--paper);
+    border: 2px solid var(--pine);
+  }
+  .next-label {
+    color: var(--pine);
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+  }
+  .tl-card.is-next {
+    background: transparent;
+    border-style: dashed;
+    border-color: var(--line-strong);
+  }
+  .tl-card.is-next .tl-title {
+    color: var(--ink-soft);
+  }
+  .chip-quiet {
+    background: transparent;
+    color: var(--ink-faint);
   }
 
   @media (min-width: 760px) {

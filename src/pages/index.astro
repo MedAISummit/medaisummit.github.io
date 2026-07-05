@@ -63,7 +63,7 @@ const totalSpeakers = editions.reduce((n, e) => n + e.speakers.length, 0)
         <SectionHeading index="02" eyebrow="The archive" title="Every edition, year by year" lede="The summit grows one year at a time. New editions join the top of the timeline." />
       </div>
       <div class="tl-wrap">
-        <EditionTimeline editions={pastEditions} />
+        <EditionTimeline editions={pastEditions} showUpcoming />
       </div>
     </div>
   </section>
