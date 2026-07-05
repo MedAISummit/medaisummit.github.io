@@ -1,0 +1,214 @@
+---
+import Base from '../../layouts/Base.astro'
+import SectionHeading from '../../components/SectionHeading.astro'
+import NewsCard from '../../components/NewsCard.astro'
+import { featuredNews, restNews, mediaMentions } from '../../data/news'
+import { site } from '../../data/site'
+
+const fmt = (d: string) => new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(d))
+---
+
+<Base
+  title="News"
+  description="Announcements, recaps and highlights from the MedAI Summit, and where to watch the talks."
+>
+  <section class="head">
+    <div class="container">
+      <div class="reveal">
+        <SectionHeading
+          level="h1"
+          eyebrow="Newsletter"
+          title="News from the summit"
+          lede="Announcements, recaps and talk highlights. The big things go out on the channel first."
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section pt-0">
+    <div class="container">
+      {
+        featuredNews && (
+          <div class="reveal">
+            <NewsCard item={featuredNews} featured />
+          </div>
+        )
+      }
+
+      {
+        restNews.length > 0 && (
+          <section class="block" aria-labelledby="highlights-heading">
+            <h2 id="highlights-heading" class="block-title">Recent highlights</h2>
+            <div class="grid reveal">
+              {restNews.map((item) => (
+                <NewsCard item={item} />
+              ))}
+            </div>
+          </section>
+        )
+      }
+
+      <section class="block" aria-labelledby="media-heading">
+        <h2 id="media-heading" class="block-title">In the media</h2>
+        {
+          mediaMentions.length > 0 ? (
+            <ul class="media reveal">
+              {mediaMentions.map((m) => (
+                <li class="media-row">
+                  <a href={m.url} target="_blank" rel="noopener">
+                    <span class="media-outlet">{m.outlet}</span>
+                    <span class="media-title">{m.title}</span>
+                    <span class="media-date">{fmt(m.date)}</span>
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div class="media-empty reveal">
+              <p>Coverage of the summit will be collected here as it appears.</p>
+              <p class="media-empty-sub">
+                Written about MedAI Summit, or planning to? <a href={site.contact} target="_blank" rel="noopener">Tell the team</a> and we will add it.
+              </p>
+            </div>
+          )
+        }
+      </section>
+
+      <div class="signup reveal">
+        <div>
+          <p class="eyebrow">The newsletter</p>
+          <h2 class="signup-title">Get the next edition in your feed.</h2>
+          <p class="signup-text">There is no sign-up form to fill in. The channel is the newsletter: announcements, the call for talks and every recording land there first.</p>
+        </div>
+        <a href={site.channel} class="btn btn-primary" target="_blank" rel="noopener">
+          Follow on Telegram
+          <svg class="arrow" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .head {
+    padding-block: clamp(3rem, 7vw, 5rem) 1rem;
+  }
+  .pt-0 {
+    padding-top: clamp(1.5rem, 4vw, 2.5rem);
+  }
+  .block {
+    margin-top: clamp(2.8rem, 6vw, 4.5rem);
+  }
+  .block-title {
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    margin-bottom: 1.6rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.1rem, 3vw, 1.6rem);
+  }
+
+  .media {
+    list-style: none;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .media-row a {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: 0.3rem 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .media-row a:hover .media-title {
+    color: var(--pine);
+  }
+  .media-outlet {
+    grid-column: 1;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pine);
+  }
+  .media-title {
+    grid-column: 1;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--ink);
+  }
+  .media-date {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    align-self: center;
+    color: var(--ink-faint);
+    font-size: 0.85rem;
+  }
+  .media-empty {
+    padding: 1.8rem;
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    color: var(--ink-soft);
+  }
+  .media-empty-sub {
+    margin-top: 0.5rem;
+    font-size: 0.94rem;
+    color: var(--ink-faint);
+  }
+  .media-empty a {
+    color: var(--pine);
+    font-weight: 600;
+  }
+
+  .signup {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: clamp(2.8rem, 6vw, 4.5rem);
+    padding: clamp(1.8rem, 4vw, 2.8rem);
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+  .signup-title {
+    margin-top: 1rem;
+    font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+    max-width: 20ch;
+  }
+  .signup-text {
+    margin-top: 0.8rem;
+    max-width: 58ch;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .signup .btn {
+    align-self: start;
+  }
+
+  @media (min-width: 640px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 900px) {
+    .signup {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
+    }
+    .signup .btn {
+      flex-shrink: 0;
+    }
+  }
+  @media (min-width: 980px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

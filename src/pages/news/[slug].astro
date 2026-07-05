@@ -1,0 +1,114 @@
+---
+import Base from '../../layouts/Base.astro'
+import { news } from '../../data/news'
+import { site } from '../../data/site'
+
+export function getStaticPaths() {
+  return news
+    .filter((n) => n.body && n.body.length > 0)
+    .map((n) => ({ params: { slug: n.slug }, props: { item: n } }))
+}
+
+const { item } = Astro.props
+const dateLabel = new Intl.DateTimeFormat('en', { day: 'numeric', month: 'long', year: 'numeric' }).format(
+  new Date(item.date),
+)
+---
+
+<Base title={item.title} description={item.excerpt}>
+  <article class="post">
+    <div class="container narrow">
+      <a href="/news" class="back">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg>
+        All news
+      </a>
+      <div class="post-meta">
+        <span class="post-cat">{item.category}</span>
+        <time datetime={item.date}>{dateLabel}</time>
+      </div>
+      <h1 class="post-title">{item.title}</h1>
+      <p class="lede post-lede">{item.excerpt}</p>
+      {item.image && <img class="post-img" src={item.image} alt={item.title} width="1200" height="600" loading="eager" decoding="async" />}
+      <div class="prose">
+        {item.body?.map((p) => <p>{p}</p>)}
+      </div>
+
+      <div class="post-cta">
+        <a href={site.contact} class="btn btn-primary" target="_blank" rel="noopener">Ask for recordings</a>
+        <a href={site.channel} class="btn btn-ghost" target="_blank" rel="noopener">Follow the summit</a>
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .post {
+    padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(3rem, 7vw, 5rem);
+  }
+  .narrow {
+    max-width: 760px;
+  }
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    margin-bottom: 1.6rem;
+  }
+  .back:hover {
+    color: var(--pine);
+  }
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 0.76rem;
+  }
+  .post-cat {
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pine);
+  }
+  .post-meta time {
+    color: var(--ink-faint);
+    font-weight: 600;
+  }
+  .post-title {
+    margin-top: 0.8rem;
+    font-size: clamp(2rem, 5.5vw, 3.2rem);
+  }
+  .post-lede {
+    margin-top: 1.2rem;
+    max-width: 60ch;
+  }
+  .post-img {
+    width: 100%;
+    aspect-ratio: 2 / 1;
+    object-fit: cover;
+    margin-top: 2rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+  .prose {
+    margin-top: 2rem;
+  }
+  .prose p {
+    font-size: 1.12rem;
+    line-height: 1.75;
+    color: var(--ink-soft);
+  }
+  .prose p + p {
+    margin-top: 1.3rem;
+  }
+  .post-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--line);
+  }
+</style>
