@@ -32,7 +32,7 @@
   /* Shape + depth */
   --radius: 14px;
   --radius-lg: 22px;
-  --shadow: 0 1px 2px rgba(22, 33, 29, 0.05), 0 10px 30px -18px rgba(22, 33, 29, 0.28);
+  --shadow: 0 1px 2px rgba(22, 33, 29, 0.05), 0 6px 16px -10px rgba(22, 33, 29, 0.14), 0 24px 50px -28px rgba(22, 33, 29, 0.3);
   --shadow-lg: 0 24px 60px -30px rgba(10, 79, 69, 0.45);
   --container: 1120px;
 }
@@ -52,7 +52,7 @@
   --pine-soft: rgba(59, 183, 163, 0.14);
   --amber: #e0a63f;
   --amber-soft: rgba(224, 166, 63, 0.16);
-  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 16px 40px -24px rgba(0, 0, 0, 0.7);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 20px -12px rgba(0, 0, 0, 0.55), 0 24px 50px -28px rgba(0, 0, 0, 0.8);
   --shadow-lg: 0 30px 70px -34px rgba(0, 0, 0, 0.8);
 }
 
@@ -103,7 +103,7 @@ body::after {
 }
 
 [data-theme='dark'] body::after {
-  opacity: 0.04;
+  opacity: 0.05;
 }
 
 img,
@@ -214,7 +214,7 @@ h3,
 }
 
 .btn-primary {
-  background: var(--pine);
+  background: linear-gradient(135deg, var(--pine), var(--pine-deep));
   color: #fbfcf9;
 }
 
