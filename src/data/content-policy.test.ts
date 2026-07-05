@@ -3,6 +3,7 @@ import { join } from 'node:path'
 import { describe, it, expect } from 'vitest'
 import { editions } from './editions'
 import { site } from './site'
+import { news } from './news'
 
 // Typographic marks that should never appear in the source. Built from code points
 // so this file holds none of them itself.
@@ -37,6 +38,10 @@ for (const e of editions) {
 }
 dataStrings.push(site.name, site.tagline, site.description)
 site.socials.forEach((s) => dataStrings.push(s.label))
+for (const n of news) {
+  dataStrings.push(n.title, n.excerpt, n.category)
+  n.body?.forEach((p) => dataStrings.push(p))
+}
 
 const BANNED = [
   /\bcomprehensive\b/i,
