@@ -14,17 +14,20 @@ const linkAttrs = speaker.url ? { href: speaker.url, target: '_blank', rel: 'noo
       <p class="sp-name">{speaker.name}</p>
       {speaker.nameFa && <p class="sp-name-fa" dir="rtl">{speaker.nameFa}</p>}
     </div>
-    {
-      speaker.url && (
-        <svg class="ext" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M7 17 17 7M9 7h8v8" />
-        </svg>
-      )
-    }
+    <span class="chip">{speaker.affiliation}</span>
   </div>
-  <span class="chip">{speaker.affiliation}</span>
   <p class="sp-talk">{speaker.talk}</p>
   {speaker.talkFa && <p class="sp-talk-fa" dir="rtl">{speaker.talkFa}</p>}
+  {
+    speaker.url && (
+      <span class="sp-watch">
+        Watch the recording
+        <svg class="arrow" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
+      </span>
+    )
+  }
 </Tag>
 
 <style>
@@ -64,26 +67,35 @@ const linkAttrs = speaker.url ? { href: speaker.url, target: '_blank', rel: 'noo
     font-size: 0.9rem;
     color: var(--ink-faint);
   }
-  .ext {
-    color: var(--ink-faint);
-    flex-shrink: 0;
-    transition: color 0.2s ease;
-  }
-  .is-link:hover .ext {
-    color: var(--pine);
-  }
   .chip {
-    align-self: flex-start;
+    flex-shrink: 0;
   }
   .sp-talk {
-    margin-top: auto;
     font-size: 0.98rem;
     color: var(--ink-soft);
     line-height: 1.5;
+    padding-left: 0.8rem;
+    border-left: 2px solid var(--amber-soft);
+  }
+  .is-link:hover .sp-talk {
+    border-left-color: var(--amber);
   }
   .sp-talk-fa {
     font-size: 0.92rem;
     color: var(--ink-faint);
     line-height: 1.7;
+  }
+  .sp-watch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: auto;
+    padding-top: 0.4rem;
+    font-size: 0.82rem;
+    font-weight: 650;
+    color: var(--pine);
+  }
+  .is-link:hover .sp-watch .arrow {
+    transform: translateX(3px);
   }
 </style>
